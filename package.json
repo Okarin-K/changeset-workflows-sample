@@ -5,7 +5,7 @@
   "scripts": {
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish tools/client --dry-run --no-git-checks"
   },
   "keywords": [],
   "author": "",
