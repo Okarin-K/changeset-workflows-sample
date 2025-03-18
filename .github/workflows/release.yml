@@ -36,7 +36,6 @@ jobs:
 
       - name: Create or Update Pull Request
         id: changesets
-        if: ${{ steps.changesets.outputs.hasChangesets == 'true' }}
         uses: changesets/action@v1
         with:
           branch: main
