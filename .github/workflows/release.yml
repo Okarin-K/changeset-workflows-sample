@@ -3,10 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - main
-    paths:
-      - tools/client/**
-      - apps/server/**
+      # - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
