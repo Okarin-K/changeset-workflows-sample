@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      # - main
+      - feat/types-changes
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -39,6 +39,10 @@ jobs:
         uses: changesets/action@v1
         with:
           branch: main
-          publish: pnpm release
+          title: "Changesetパッケージ更新"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to npm
+        run: pnpm -F @Okarin-K/client publish --dry-run --no-git-checks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
