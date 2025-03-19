@@ -39,7 +39,7 @@ jobs:
         uses: changesets/action@v1
         with:
           branch: main
-          title: "Changesetパッケージ更新"
+          commit: "chore: update package versions [skip ci]"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to npm
