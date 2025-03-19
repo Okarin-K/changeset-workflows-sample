@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      # - main
+      - feat/types-changes
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -39,6 +39,11 @@ jobs:
         uses: changesets/action@v1
         with:
           branch: main
-          publish: pnpm release
+          commit: "chore: update package versions [skip ci]"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to npm
+        if: ${{ steps.changesets.outputs.hasChangesets == 'false' }}
+        run: pnpm -F @Okarin-K/client publish --dry-run --no-git-checks
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
