@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - feat/types-changes
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
