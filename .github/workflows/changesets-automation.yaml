@@ -1,18 +1,34 @@
-name: Changesets Automation
+name: Auto Merge Changeset PR
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize, ready_for_review]
 
 jobs:
-  changesets-automation:
+  auto-merge:
     runs-on: ubuntu-latest
-    if: ${{ github.actor != 'github-actions[bot]' }}
-    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+
+    if: github.ref_name == 'changeset-release/main'
+
     steps:
-      - name: Merge Changesets PR
-        if: github.ref_name == "changeset-release/main"
-        uses: "actions/github-script@v6"
-        script: |
-          console.log("Merge Changesets PR")
-        
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+
+      - name: Edit PR title
+        run: gh pr edit "$PR_URL" -t "(auto merged) $PR_TITLE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+
+      - name: Enable auto merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
