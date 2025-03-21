@@ -11,7 +11,7 @@ jobs:
       contents: write
       pull-requests: write
 
-    if: github.ref_name == 'changeset-release/main'
+    if: github.head_ref == 'changeset-release/main'
 
     steps:
       - name: Approve PR
